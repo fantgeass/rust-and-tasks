@@ -1,3 +1,6 @@
+#![allow(unused_imports)]
+#![allow(dead_code)]
+
 pub fn solution(s: &mut String) -> i32 {
   let mut c = 0;
   let mut prev_safe = true;
@@ -10,7 +13,7 @@ pub fn solution(s: &mut String) -> i32 {
       },
       '>' if i+1 == s.len() => c += 1,
       '>' => prev_safe = false,
-      '<' if i == 0 || prev_safe => {
+      '<' if prev_safe => {
         c += 1;
         prev_safe = true;
       },
