@@ -1,18 +1,20 @@
 #[derive(Debug, PartialEq)]
 struct ParseError;
 
-fn last(word_machine: &Vec<u16>) -> Result<&u16, ParseError> {
+const MAX_20_BIT: u32 = 1048575;
+
+fn last(word_machine: &Vec<u32>) -> Result<&u32, ParseError> {
     word_machine.last().ok_or(ParseError)
 }
 
-fn pop(word_machine: &mut Vec<u16>) -> Result<u16, ParseError> {
+fn pop(word_machine: &mut Vec<u32>) -> Result<u32, ParseError> {
     word_machine.pop().ok_or(ParseError)
 }
 
-fn parse(ops: &str) -> Result<u16, ParseError> {
-    let mut word_machine: Vec<u16> = Vec::new();
+fn parse(ops: &str) -> Result<u32, ParseError> {
+    let mut word_machine: Vec<u32> = Vec::new();
 
-    for op in ops.split(' ') {
+    for op in ops.split_whitespace() {
         match op {
             "POP" => {
                 pop(&mut word_machine)?;
@@ -26,11 +28,17 @@ fn parse(ops: &str) -> Result<u16, ParseError> {
                 let l2 = pop(&mut word_machine)?;
 
                 let sum_or_sub = if op == "+" {
-                    l1.checked_add(l2)
+                    let sum = l1 + l2;
+                    if sum > MAX_20_BIT {
+                        return Err(ParseError);
+                    }
+                    sum
                 } else {
-                    l1.checked_sub(l2)
-                }
-                .ok_or(ParseError)?;
+                    if l1 < l2 {
+                        return Err(ParseError);
+                    }
+                    l1 - l2
+                };
 
                 word_machine.push(sum_or_sub);
             }
@@ -53,7 +61,7 @@ mod tests {
         assert_eq!(parse("13 DUP 4 POP 5 DUP + DUP + -".into()), Ok(7));
         assert!(parse("5 6 + -".into()).is_err());
         assert!(parse("3 DUP 5 - -".into()).is_err());
-        assert!(parse("60000 DUP +".into()).is_err());
+        assert!(parse("1048575 DUP +".into()).is_err());
         assert!(parse("15 10 -".into()).is_err());
     }
 }

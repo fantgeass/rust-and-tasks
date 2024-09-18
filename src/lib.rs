@@ -1,5 +1,5 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 
-mod hash;
+mod arrays_and_strings;
 mod random;
