@@ -2,5 +2,6 @@
 #![allow(dead_code)]
 
 mod easy;
-// mod medium;
+mod hard;
+mod medium;
 mod random;

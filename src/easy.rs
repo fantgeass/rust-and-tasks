@@ -1,4 +1,6 @@
+mod binary_search;
 mod find_closest_number_to_zero;
+mod find_max_average;
 mod is_subsequence;
 mod jewels_and_stones;
 mod longest_common_prefix;
@@ -6,4 +8,8 @@ mod max_profit;
 mod merge_strings_alternately;
 mod ransom_note;
 mod roman_to_integer;
+mod search_insert;
 mod summary_ranges;
+// mod valid_parentheses;
+mod find_path;
+mod valid_perfect_square;
